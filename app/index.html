@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neon Palm Cover Studio — GTA-style cover art maker</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <h1>NEON PALM <span>Cover Studio</span></h1>
+    <p class="tagline">Turn any photo into GTA-style cover art. Offline — your photos never leave this machine.</p>
+  </div>
+  <div class="top-actions">
+    <button id="undoBtn" type="button" disabled>Undo</button>
+    <button id="redoBtn" type="button" disabled>Redo</button>
+    <button id="shuffleBtn" type="button">Shuffle</button>
+    <button id="exportBtn" type="button" class="primary">Export PNG</button>
+    <button id="exportAllBtn" type="button">Export all sizes</button>
+  </div>
+</header>
+<main class="studio">
+  <section class="controls" aria-label="Cover controls">
+    <div class="group">
+      <h2>Layout</h2>
+      <div id="layoutBtns" class="btn-grid"></div>
+    </div>
+    <div class="group">
+      <h2>Grade</h2>
+      <div id="gradeBtns" class="swatches"></div>
+    </div>
+    <div class="group">
+      <h2>Size</h2>
+      <div id="sizeBtns" class="btn-grid"></div>
+    </div>
+    <div class="group">
+      <h2>Lettering</h2>
+      <label>Title <input id="titleInput" type="text" maxlength="30" value="NEON SHORE"></label>
+      <label>Subtitle <input id="subtitleInput" type="text" maxlength="40" value="Vice City nights"></label>
+      <div class="sub-label">Star meter</div>
+      <div id="starBtns" class="btn-row"></div>
+      <div class="sub-label">Badge</div>
+      <div id="badgeBtns" class="btn-row"></div>
+      <label>Badge text <input id="badgeText" type="text" maxlength="12" value="NEW"></label>
+    </div>
+    <div class="group">
+      <h2>Frame &amp; effects</h2>
+      <div id="frameBtns" class="btn-row"></div>
+      <label class="check"><input id="grainToggle" type="checkbox" checked> Film grain</label>
+      <label class="check"><input id="vignetteToggle" type="checkbox" checked> Vignette</label>
+      <label class="check"><input id="halftoneToggle" type="checkbox"> Halftone dots</label>
+    </div>
+    <div class="group">
+      <h2>Photos</h2>
+      <div id="tray" class="tray"></div>
+      <button id="uploadBtn" type="button" class="wide">Upload your photos…</button>
+      <input id="fileInput" type="file" accept="image/*" multiple hidden>
+      <p class="hint">Click a photo, then click a panel to place it. Or drag a photo onto the page to add it.</p>
+    </div>
+    <div class="group">
+      <h2>Selected panel</h2>
+      <p id="panelLabel" class="panel-label"></p>
+      <label class="slider-row">Zoom <input id="zoomSlider" type="range" min="100" max="260" value="100"> <span id="zoomLabel">100%</span></label>
+      <div class="btn-row">
+        <button id="fillBtn" type="button">Fill panel</button>
+        <button id="nextPhotoBtn" type="button">Next photo</button>
+      </div>
+      <p class="hint">Drag a panel to reposition its photo. Scroll over a panel to zoom it.</p>
+    </div>
+  </section>
+  <section class="preview-wrap">
+    <canvas id="preview" width="1080" height="1080" aria-label="Cover preview"></canvas>
+    <p id="status" role="status"></p>
+  </section>
+</main>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

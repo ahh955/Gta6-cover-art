@@ -1,0 +1,81 @@
+// Vice City colour grades for Neon Palm Cover Studio. Each grade is a look applied
+// to every photo on a cover: a canvas filter (the LUT-style pass), a shadow wash and
+// a highlight wash painted over each panel, a light leak across the whole cover, and
+// the lettering palette that goes with it. All values are the studio's own recipes.
+
+export const GRADES = {
+  sunset: {
+    name: 'Vice Sunset',
+    filter: 'saturate(1.35) contrast(1.08) sepia(0.16) hue-rotate(-10deg)',
+    shadow: 'rgba(88, 16, 92, 0.34)',
+    highlight: 'rgba(255, 148, 64, 0.30)',
+    leak: { x: 0.86, y: 0.10, r: 0.75, color: 'rgba(255, 196, 96, 0.34)' },
+    title: ['#ffe259', '#ffa751', '#ff2975'],
+    subtitle: '#fff3f8',
+    neon: '#ff2e88',
+    bg: ['#33124a', '#140722'],
+    scrim: 'rgba(26, 6, 38, 0.58)',
+  },
+  neon: {
+    name: 'Neon Nights',
+    filter: 'saturate(1.55) contrast(1.12) hue-rotate(14deg)',
+    shadow: 'rgba(4, 74, 88, 0.38)',
+    highlight: 'rgba(255, 46, 136, 0.26)',
+    leak: { x: 0.12, y: 0.08, r: 0.70, color: 'rgba(64, 224, 255, 0.30)' },
+    title: ['#7df9ff', '#38bdf8', '#ff2e88'],
+    subtitle: '#eafcff',
+    neon: '#22d3ee',
+    bg: ['#0b2436', '#050b18'],
+    scrim: 'rgba(3, 12, 24, 0.60)',
+  },
+  golden: {
+    name: 'Golden Hour',
+    filter: 'saturate(1.28) contrast(1.05) sepia(0.32) hue-rotate(-16deg)',
+    shadow: 'rgba(96, 44, 8, 0.34)',
+    highlight: 'rgba(255, 214, 110, 0.34)',
+    leak: { x: 0.80, y: 0.16, r: 0.80, color: 'rgba(255, 226, 140, 0.38)' },
+    title: ['#fff3b0', '#ffc93c', '#ff6b35'],
+    subtitle: '#fff8e1',
+    neon: '#ffb703',
+    bg: ['#3d2410', '#1c0e04'],
+    scrim: 'rgba(30, 16, 4, 0.55)',
+  },
+  mint: {
+    name: 'Miami Mint',
+    filter: 'saturate(1.18) contrast(1.02) hue-rotate(28deg) brightness(1.04)',
+    shadow: 'rgba(8, 96, 88, 0.30)',
+    highlight: 'rgba(190, 255, 226, 0.30)',
+    leak: { x: 0.16, y: 0.14, r: 0.72, color: 'rgba(170, 255, 220, 0.32)' },
+    title: ['#d8fff1', '#5eead4', '#0ea5e9'],
+    subtitle: '#f0fdfa',
+    neon: '#2dd4bf',
+    bg: ['#0f2e2a', '#06120f'],
+    scrim: 'rgba(4, 24, 20, 0.58)',
+  },
+  noir: {
+    name: 'Cherry Noir',
+    filter: 'saturate(1.22) contrast(1.26) brightness(0.92) hue-rotate(-6deg)',
+    shadow: 'rgba(40, 0, 10, 0.42)',
+    highlight: 'rgba(255, 60, 90, 0.24)',
+    leak: { x: 0.88, y: 0.86, r: 0.70, color: 'rgba(255, 80, 110, 0.26)' },
+    title: ['#fecdd3', '#fb7185', '#e11d48'],
+    subtitle: '#fff1f2',
+    neon: '#f43f5e',
+    bg: ['#26060e', '#0d0206'],
+    scrim: 'rgba(16, 2, 6, 0.62)',
+  },
+  chrome: {
+    name: 'Palm Chrome',
+    filter: 'saturate(0.55) contrast(1.16) brightness(1.06)',
+    shadow: 'rgba(30, 41, 59, 0.36)',
+    highlight: 'rgba(226, 232, 240, 0.30)',
+    leak: { x: 0.10, y: 0.90, r: 0.75, color: 'rgba(200, 220, 255, 0.30)' },
+    title: ['#ffffff', '#cbd5e1', '#64748b'],
+    subtitle: '#f8fafc',
+    neon: '#94a3b8',
+    bg: ['#1e293b', '#0b1120'],
+    scrim: 'rgba(8, 12, 22, 0.58)',
+  },
+};
+
+export const GRADE_IDS = Object.keys(GRADES);
