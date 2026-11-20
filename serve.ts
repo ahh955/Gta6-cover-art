@@ -1,9 +1,8 @@
-// A tiny static server for app/ (Node 22, standard library only), so the
-// studio can be tried locally with no build step: `node serve.ts` serves
-// app/ on http://localhost:8080. It sends the MIME types an offline web app
-// needs and refuses any path that escapes app/. A development convenience,
-// not a web server for the internet.
-
+// A tiny static server for app/ (Node 22, standard library only), so the cover
+// studio can be tried locally without a build step: `node serve.ts` serves app/
+// on http://localhost:8080 (or --port <n>). It sends the MIME types an offline web
+// app needs and refuses any path outside app/. A development convenience, not a
+// web server for the internet.
 import { createReadStream, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize, resolve, sep } from 'node:path';
@@ -15,7 +14,7 @@ const portFlag = args.indexOf('--port');
 const wanted = portFlag === -1 ? 8080 : Number(args[portFlag + 1]);
 const port = Number.isInteger(wanted) && wanted > 0 && wanted < 65536 ? wanted : 8080;
 
-const MIME = {
+const MIME: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.mjs': 'text/javascript; charset=utf-8',
@@ -32,32 +31,36 @@ const MIME = {
   '.txt': 'text/plain; charset=utf-8',
 };
 
-const server = createServer((req, res) => {
-  const url = new URL(req.url || '/', 'http://localhost');
-  const rel = normalize(url.pathname.replace(/^\/+/, '') || 'index.html');
-  const file = join(root, rel);
-  if (!file.startsWith(root + sep) && file !== root) {
-    res.writeHead(403);
-    res.end('forbidden');
-    return;
-  }
-  let stat;
+createServer((request, response) => {
+  const url = new URL(request.url ?? '/', 'http://localhost');
+  let pathname: string;
   try {
-    stat = statSync(file);
+    pathname = decodeURIComponent(url.pathname);
   } catch {
-    res.writeHead(404);
-    res.end('not found');
+    response.writeHead(400).end('bad request');
     return;
   }
-  if (stat.isDirectory()) {
-    res.writeHead(302, { Location: `${url.pathname.replace(/\/?$/, '/')}index.html` });
-    res.end();
+  if (pathname.endsWith('/')) pathname += 'index.html';
+  const file = resolve(join(root, normalize(pathname)));
+  if (file !== root && !file.startsWith(root + sep)) {
+    response.writeHead(403).end('forbidden');
     return;
   }
-  res.writeHead(200, { 'Content-Type': MIME[extname(file).toLowerCase()] || 'application/octet-stream' });
-  createReadStream(file).pipe(res);
-});
-
-server.listen(port, () => {
-  console.log(`Neon Palm Cover Studio at http://localhost:${port}`);
+  let size: number;
+  try {
+    const stats = statSync(file);
+    if (!stats.isFile()) throw new Error('not a file');
+    size = stats.size;
+  } catch {
+    response.writeHead(404).end('not found');
+    return;
+  }
+  response.writeHead(200, {
+    'content-type': MIME[extname(file).toLowerCase()] ?? 'application/octet-stream',
+    'content-length': size,
+    'cache-control': 'no-store',
+  });
+  createReadStream(file).pipe(response);
+}).listen(port, '127.0.0.1', () => {
+  console.log(`Vice Cast Cover Studio is on http://localhost:${port}`);
 });

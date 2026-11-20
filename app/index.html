@@ -1,128 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Neon Palm Cover Studio — GTA-style cover art maker</title>
-<meta name="description" content="Turn any photo and caption into GTA-style cover art: multi-panel posters, Vice City neon-sunset grades, PNG export. Offline, no upload.">
-<link rel="stylesheet" href="style.css">
+<title>Vice Cast Cover Studio — GTA-style multi-panel cover art</title>
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <header class="topbar">
-  <div class="brand">
-    <span class="brand-mark">NP</span>
-    <div>
-      <h1>Neon Palm <em>Cover Studio</em></h1>
-      <p>Your photo. Your caption. A Vice City cover.</p>
-    </div>
-  </div>
-  <div class="top-actions">
-    <button type="button" id="undoBtn" title="Undo (Ctrl+Z)">↩ Undo</button>
-    <button type="button" id="redoBtn" title="Redo (Ctrl+Y)">↪ Redo</button>
-    <button type="button" id="shuffleBtn" class="accent" title="Random layout, grade, title and photos">🎲 Shuffle</button>
-  </div>
+  <div class="brand"><span class="brand-mark">VC</span> VICE CAST <em>COVER STUDIO</em></div>
+  <ol class="stepper" aria-label="Three steps to a cover">
+    <li><b>1</b> Add photos</li>
+    <li><b>2</b> Caption</li>
+    <li><b>3</b> Export PNG</li>
+  </ol>
+  <div class="offline">Photos never leave this device &middot; Works offline</div>
 </header>
 
-<main class="studio">
-  <section class="preview-pane">
-    <div class="canvas-wrap">
-      <canvas id="coverCanvas" width="900" height="900"></canvas>
-      <p class="canvas-hint">Click a panel to select it · drag its photo to move it · scroll to zoom</p>
-    </div>
-    <div class="tray-block">
-      <div class="tray-head">
-        <h2>Photos</h2>
-        <label class="upload-btn" for="uploadInput">+ Add your photos</label>
-        <input type="file" id="uploadInput" accept="image/*" multiple hidden>
-      </div>
-      <div id="tray" class="tray"></div>
-      <p class="tray-note">Click a photo, then click a panel to place it — or drop image files anywhere. Photos never leave this machine.</p>
-    </div>
-  </section>
-
+<div class="workspace">
   <aside class="controls">
-    <section class="panel-block">
+    <section class="group">
+      <h2><span class="step-no">1</span> Photos</h2>
+      <div class="row">
+        <button id="add-photos" type="button" class="btn primary">Add photos</button>
+        <button id="sample-crew" type="button" class="btn">Try sample crew</button>
+      </div>
+      <button id="one-photo" type="button" class="btn wide">One photo, all panels</button>
+      <input id="file-input" type="file" accept="image/*" multiple hidden>
+      <div id="tray" class="tray" aria-label="Your photos"></div>
+      <p class="hint">Click a photo to fill the selected panel, or drag it onto a panel. Drop any image file straight onto the cover.</p>
+    </section>
+
+    <section class="group">
+      <h2><span class="step-no">2</span> Caption</h2>
+      <label>Title <input id="title" type="text" maxlength="30" value="VICE CAST"></label>
+      <label>Subtitle <input id="subtitle" type="text" maxlength="60" value="Seven souls. One city."></label>
+      <label>Tagline ribbon <input id="tagline" type="text" maxlength="40" value="Every crew has a story"></label>
+      <label>Review quote <input id="quote" type="text" maxlength="60" value="The cover of the summer"></label>
+      <h3>Title style</h3>
+      <div class="swatches">
+        <button type="button" class="swatch" data-title-style="sunset">Sunset chrome</button>
+        <button type="button" class="swatch" data-title-style="gold">Golden leaf</button>
+        <button type="button" class="swatch" data-title-style="ice">Ice neon</button>
+        <button type="button" class="swatch" data-title-style="tube">Neon tube</button>
+        <button type="button" class="swatch" data-title-style="blade">Heat blade</button>
+      </div>
+      <h3>Subtitle font</h3>
+      <div class="swatches">
+        <button type="button" class="swatch script" data-subtitle-font="pacifico">Pacifico script</button>
+        <button type="button" class="swatch script" data-subtitle-font="retro">Retro script</button>
+      </div>
+    </section>
+
+    <section class="group">
       <h2>Layout</h2>
-      <div id="layoutChoices" class="choices"></div>
-    </section>
-
-    <section class="panel-block">
-      <h2>Grade</h2>
-      <div id="gradeChoices" class="choices"></div>
-    </section>
-
-    <section class="panel-block">
-      <h2>Caption</h2>
-      <label class="field">Title
-        <input id="titleInput" type="text" maxlength="40" value="NEON SHORE" autocomplete="off">
-      </label>
-      <label class="field">Subtitle
-        <input id="subtitleInput" type="text" maxlength="60" value="Vice City nights" autocomplete="off">
-      </label>
-      <label class="field">Badge text
-        <input id="badgeInput" type="text" maxlength="24" value="EST. 2026" autocomplete="off">
-      </label>
-      <div class="field-row">
-        <label class="field">Badge style
-          <select id="badgeStyle">
-            <option value="ribbon">Ribbon</option>
-            <option value="pill">Pill</option>
-            <option value="strip">Strip</option>
-            <option value="none">None</option>
-          </select>
-        </label>
-        <label class="field">Heat
-          <span id="starRow" class="star-row">
-            <button type="button" aria-label="1 star">★</button><button type="button" aria-label="2 stars">★</button><button type="button" aria-label="3 stars">★</button><button type="button" aria-label="4 stars">★</button><button type="button" aria-label="5 stars">★</button>
-          </span>
-        </label>
+      <div class="swatches">
+        <button type="button" class="swatch" data-layout="hero">Hero mosaic</button>
+        <button type="button" class="swatch" data-layout="six">Six grid</button>
+        <button type="button" class="swatch" data-layout="diagonal">Diagonal strips</button>
+        <button type="button" class="swatch" data-layout="seven">Seven mosaic</button>
+      </div>
+      <div class="row">
+        <button id="auto-layout" type="button" class="btn">Auto layout</button>
+        <button id="surprise" type="button" class="btn">Surprise me</button>
       </div>
     </section>
 
-    <section class="panel-block">
-      <h2>Selected panel</h2>
-      <label class="field">Zoom <span id="zoomLabel">100%</span>
-        <input id="zoomRange" type="range" min="100" max="260" value="100">
-      </label>
-      <div class="btn-row">
-        <button type="button" id="fillBtn">Fill all panels</button>
-        <button type="button" id="nextPhotoBtn">Next photo →</button>
+    <section class="group">
+      <h2>Colour grade</h2>
+      <div class="swatches grades">
+        <button type="button" class="swatch" data-grade="sunset" style="--g1:#ff7a1a;--g2:#d6246e">Sunset Gold</button>
+        <button type="button" class="swatch" data-grade="neon" style="--g1:#2de2e6;--g2:#ff2e88">Neon Night</button>
+        <button type="button" class="swatch" data-grade="teal" style="--g1:#00beaa;--g2:#0a3c6e">Tropic Teal</button>
+        <button type="button" class="swatch" data-grade="golden" style="--g1:#ffc850;--g2:#a03c14">Golden Hour</button>
+        <button type="button" class="swatch" data-grade="heat" style="--g1:#ff3c14;--g2:#780028">Heatwave</button>
+        <button type="button" class="swatch" data-grade="dusk" style="--g1:#be3cff;--g2:#280050">Magenta Dusk</button>
+      </div>
+      <h3>Look</h3>
+      <label class="slider">Paint <input id="look-paint" type="range" min="0" max="1" step="0.01" value="0.5"></label>
+      <label class="slider">Grade <input id="look-grade" type="range" min="0" max="1" step="0.01" value="0.7"></label>
+      <label class="slider">Halftone <input id="look-halftone" type="range" min="0" max="1" step="0.01" value="0.25"></label>
+      <label class="slider">Grain <input id="look-grain" type="range" min="0" max="1" step="0.01" value="0.35"></label>
+      <label class="slider">Glow <input id="look-glow" type="range" min="0" max="1" step="0.01" value="0.5"></label>
+      <label class="slider">Title size <input id="look-titleSize" type="range" min="0" max="1" step="0.01" value="0.5"></label>
+    </section>
+
+    <section class="group">
+      <h2>Selected panel &middot; <span id="panel-label">Panel 1 of 7</span></h2>
+      <label>Role tag <input id="role" type="text" maxlength="20" value="THE BOSS"></label>
+      <div class="row wrap">
+        <button id="face-btn" type="button" class="btn">Face</button>
+        <button id="flip-btn" type="button" class="btn">Flip</button>
+        <button id="swap-btn" type="button" class="btn">Swap</button>
+        <button id="reset-btn" type="button" class="btn">Reset</button>
+        <button id="empty-btn" type="button" class="btn">Empty</button>
+      </div>
+      <label class="slider">Zoom <input id="zoom" type="range" min="1" max="3" step="0.01" value="1"></label>
+      <label class="slider">Left &ndash; right <input id="pan-x" type="range" min="0" max="1" step="0.01" value="0.5"></label>
+      <label class="slider">Up &ndash; down <input id="pan-y" type="range" min="0" max="1" step="0.01" value="0.42"></label>
+      <p class="hint">Click a panel to select it, drag to pan the photo, scroll to zoom. Face recentres the crop on the face.</p>
+      <div class="row">
+        <button id="undo-btn" type="button" class="btn">Undo</button>
+        <button id="redo-btn" type="button" class="btn">Redo</button>
       </div>
     </section>
 
-    <section class="panel-block">
-      <h2>Finish</h2>
-      <div class="field-row">
-        <label class="field">Frame
-          <select id="frameSelect">
-            <option value="white">White</option>
-            <option value="black">Black</option>
-            <option value="none">None</option>
-          </select>
-        </label>
-        <label class="field">Size
-          <select id="sizeSelect">
-            <option value="1080x1080">Square 1080 × 1080</option>
-            <option value="1080x1350">Portrait 1080 × 1350</option>
-            <option value="1920x1080">Wide 1920 × 1080</option>
-            <option value="1080x1920">Story 1080 × 1920</option>
-          </select>
-        </label>
+    <section class="group">
+      <h2><span class="step-no">3</span> Export PNG</h2>
+      <div class="swatches">
+        <button type="button" class="swatch" data-size="1x1">1:1 &middot; 1080&times;1080</button>
+        <button type="button" class="swatch" data-size="4x5">4:5 &middot; 1080&times;1350</button>
+        <button type="button" class="swatch" data-size="16x9">16:9 &middot; 1920&times;1080</button>
       </div>
-      <label class="check"><input id="grainCheck" type="checkbox" checked> Film grain</label>
-      <label class="check"><input id="vignetteCheck" type="checkbox" checked> Vignette</label>
-      <label class="check"><input id="halftoneCheck" type="checkbox"> Halftone band</label>
-    </section>
-
-    <section class="panel-block export-block">
-      <button type="button" id="exportBtn" class="export">⬇ Export PNG</button>
-      <button type="button" id="exportAllBtn">Export all 4 sizes</button>
-      <p id="exportNote" class="export-note" aria-live="polite"></p>
-      <p class="privacy">Offline by design: every font and photo ships with this page, and your uploads stay on your machine.</p>
+      <div class="row">
+        <button id="export-btn" type="button" class="btn primary">Export PNG</button>
+        <button id="export-all" type="button" class="btn">Export all 3</button>
+      </div>
+      <p id="status" role="status"></p>
     </section>
   </aside>
-</main>
 
-<script type="module" src="src/main.js"></script>
+  <main class="stage">
+    <div class="canvas-wrap">
+      <canvas id="preview" width="720" height="720" aria-label="The cover, live preview"></canvas>
+    </div>
+    <div class="thumbs" aria-label="Live previews of the three post sizes">
+      <figure><canvas id="thumb-1x1" width="132" height="132"></canvas><figcaption>1:1</figcaption></figure>
+      <figure><canvas id="thumb-4x5" width="132" height="165"></canvas><figcaption>4:5</figcaption></figure>
+      <figure><canvas id="thumb-16x9" width="132" height="74"></canvas><figcaption>16:9</figcaption></figure>
+    </div>
+  </main>
+</div>
+
+<script type="module" src="./src/main.js"></script>
 </body>
 </html>
