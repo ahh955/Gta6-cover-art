@@ -25,14 +25,13 @@ network request. Your photos never leave your machine.
 - **Lettering** — Anton titles with a sunset-gradient fill and dark outline,
   Pacifico neon-glow subtitles, a 0–5 star heat meter, a badge (ribbon, pill or
   strip) and a neon divider rule.
-- **Effects** — film grain, vignette, halftone dots, white/black/no frame.
+- **Effects** — film grain, vignette, halftone band, white/black/no frame.
 - **Per-panel editing** — click a panel to select it, drag its photo to
   reposition it, scroll or use the slider to zoom (100–260%), click a tray
-  photo then a panel to place it, Fill panel, Next photo. Photos are placed
-  with a smart face-aware pan, so wide panels never crop faces.
+  photo then a panel to place it, Fill all panels, Next photo.
 - **Undo/redo** (60 steps, Ctrl+Z / Ctrl+Y), **Shuffle** (random layout, grade,
   title and photos), **drag-and-drop upload** of your own photos.
-- **6 sample photos** — two from the kit, four made with an image model — so the
+- **6 sample photos** — four made with an image model, two from the kit — so the
   studio works with no upload at all.
 
 ## Try it
@@ -61,9 +60,9 @@ Export PNG.
 
 All art, lettering and code here are original. No Rockstar Games logo, wordmark,
 official artwork, character or font is used anywhere. The fonts are Anton and
-Pacifico under the SIL Open Font License (their `OFL-*.txt` texts ship beside
-them in `app/fonts/`). The sample photos are the kit's two (free to use) plus
-four made with an image model; no real person is pictured.
+Pacifico under the SIL Open Font License (the `OFL.txt` text ships beside them
+in `app/fonts/`). The sample photos are four made with an image model plus the
+kit's two (free to use); no real person is pictured.
 
 ## License
 

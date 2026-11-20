@@ -1,80 +1,128 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Neon Palm Cover Studio — GTA-style cover art maker</title>
-<link rel="icon" href="data:,">
-<link rel="stylesheet" href="./style.css">
+<meta name="description" content="Turn any photo and caption into GTA-style cover art: multi-panel posters, Vice City neon-sunset grades, PNG export. Offline, no upload.">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
   <div class="brand">
-    <h1>NEON PALM <span>Cover Studio</span></h1>
-    <p class="tagline">Turn any photo into GTA-style cover art. Offline — your photos never leave this machine.</p>
+    <span class="brand-mark">NP</span>
+    <div>
+      <h1>Neon Palm <em>Cover Studio</em></h1>
+      <p>Your photo. Your caption. A Vice City cover.</p>
+    </div>
   </div>
   <div class="top-actions">
-    <button id="undoBtn" type="button" disabled>Undo</button>
-    <button id="redoBtn" type="button" disabled>Redo</button>
-    <button id="shuffleBtn" type="button">Shuffle</button>
-    <button id="exportBtn" type="button" class="primary">Export PNG</button>
-    <button id="exportAllBtn" type="button">Export all sizes</button>
+    <button type="button" id="undoBtn" title="Undo (Ctrl+Z)">↩ Undo</button>
+    <button type="button" id="redoBtn" title="Redo (Ctrl+Y)">↪ Redo</button>
+    <button type="button" id="shuffleBtn" class="accent" title="Random layout, grade, title and photos">🎲 Shuffle</button>
   </div>
 </header>
+
 <main class="studio">
-  <section class="controls" aria-label="Cover controls">
-    <div class="group">
-      <h2>Layout</h2>
-      <div id="layoutBtns" class="btn-grid"></div>
+  <section class="preview-pane">
+    <div class="canvas-wrap">
+      <canvas id="coverCanvas" width="900" height="900"></canvas>
+      <p class="canvas-hint">Click a panel to select it · drag its photo to move it · scroll to zoom</p>
     </div>
-    <div class="group">
-      <h2>Grade</h2>
-      <div id="gradeBtns" class="swatches"></div>
-    </div>
-    <div class="group">
-      <h2>Size</h2>
-      <div id="sizeBtns" class="btn-grid"></div>
-    </div>
-    <div class="group">
-      <h2>Lettering</h2>
-      <label>Title <input id="titleInput" type="text" maxlength="30" value="NEON SHORE"></label>
-      <label>Subtitle <input id="subtitleInput" type="text" maxlength="40" value="Vice City nights"></label>
-      <div class="sub-label">Star meter</div>
-      <div id="starBtns" class="btn-row"></div>
-      <div class="sub-label">Badge</div>
-      <div id="badgeBtns" class="btn-row"></div>
-      <label>Badge text <input id="badgeText" type="text" maxlength="12" value="NEW"></label>
-    </div>
-    <div class="group">
-      <h2>Frame &amp; effects</h2>
-      <div id="frameBtns" class="btn-row"></div>
-      <label class="check"><input id="grainToggle" type="checkbox" checked> Film grain</label>
-      <label class="check"><input id="vignetteToggle" type="checkbox" checked> Vignette</label>
-      <label class="check"><input id="halftoneToggle" type="checkbox"> Halftone dots</label>
-    </div>
-    <div class="group">
-      <h2>Photos</h2>
-      <div id="tray" class="tray"></div>
-      <button id="uploadBtn" type="button" class="wide">Upload your photos…</button>
-      <input id="fileInput" type="file" accept="image/*" multiple hidden>
-      <p class="hint">Click a photo, then click a panel to place it. Or drag a photo onto the page to add it.</p>
-    </div>
-    <div class="group">
-      <h2>Selected panel</h2>
-      <p id="panelLabel" class="panel-label"></p>
-      <label class="slider-row">Zoom <input id="zoomSlider" type="range" min="100" max="260" value="100"> <span id="zoomLabel">100%</span></label>
-      <div class="btn-row">
-        <button id="fillBtn" type="button">Fill panel</button>
-        <button id="nextPhotoBtn" type="button">Next photo</button>
+    <div class="tray-block">
+      <div class="tray-head">
+        <h2>Photos</h2>
+        <label class="upload-btn" for="uploadInput">+ Add your photos</label>
+        <input type="file" id="uploadInput" accept="image/*" multiple hidden>
       </div>
-      <p class="hint">Drag a panel to reposition its photo. Scroll over a panel to zoom it.</p>
+      <div id="tray" class="tray"></div>
+      <p class="tray-note">Click a photo, then click a panel to place it — or drop image files anywhere. Photos never leave this machine.</p>
     </div>
   </section>
-  <section class="preview-wrap">
-    <canvas id="preview" width="1080" height="1080" aria-label="Cover preview"></canvas>
-    <p id="status" role="status"></p>
-  </section>
+
+  <aside class="controls">
+    <section class="panel-block">
+      <h2>Layout</h2>
+      <div id="layoutChoices" class="choices"></div>
+    </section>
+
+    <section class="panel-block">
+      <h2>Grade</h2>
+      <div id="gradeChoices" class="choices"></div>
+    </section>
+
+    <section class="panel-block">
+      <h2>Caption</h2>
+      <label class="field">Title
+        <input id="titleInput" type="text" maxlength="40" value="NEON SHORE" autocomplete="off">
+      </label>
+      <label class="field">Subtitle
+        <input id="subtitleInput" type="text" maxlength="60" value="Vice City nights" autocomplete="off">
+      </label>
+      <label class="field">Badge text
+        <input id="badgeInput" type="text" maxlength="24" value="EST. 2026" autocomplete="off">
+      </label>
+      <div class="field-row">
+        <label class="field">Badge style
+          <select id="badgeStyle">
+            <option value="ribbon">Ribbon</option>
+            <option value="pill">Pill</option>
+            <option value="strip">Strip</option>
+            <option value="none">None</option>
+          </select>
+        </label>
+        <label class="field">Heat
+          <span id="starRow" class="star-row">
+            <button type="button" aria-label="1 star">★</button><button type="button" aria-label="2 stars">★</button><button type="button" aria-label="3 stars">★</button><button type="button" aria-label="4 stars">★</button><button type="button" aria-label="5 stars">★</button>
+          </span>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel-block">
+      <h2>Selected panel</h2>
+      <label class="field">Zoom <span id="zoomLabel">100%</span>
+        <input id="zoomRange" type="range" min="100" max="260" value="100">
+      </label>
+      <div class="btn-row">
+        <button type="button" id="fillBtn">Fill all panels</button>
+        <button type="button" id="nextPhotoBtn">Next photo →</button>
+      </div>
+    </section>
+
+    <section class="panel-block">
+      <h2>Finish</h2>
+      <div class="field-row">
+        <label class="field">Frame
+          <select id="frameSelect">
+            <option value="white">White</option>
+            <option value="black">Black</option>
+            <option value="none">None</option>
+          </select>
+        </label>
+        <label class="field">Size
+          <select id="sizeSelect">
+            <option value="1080x1080">Square 1080 × 1080</option>
+            <option value="1080x1350">Portrait 1080 × 1350</option>
+            <option value="1920x1080">Wide 1920 × 1080</option>
+            <option value="1080x1920">Story 1080 × 1920</option>
+          </select>
+        </label>
+      </div>
+      <label class="check"><input id="grainCheck" type="checkbox" checked> Film grain</label>
+      <label class="check"><input id="vignetteCheck" type="checkbox" checked> Vignette</label>
+      <label class="check"><input id="halftoneCheck" type="checkbox"> Halftone band</label>
+    </section>
+
+    <section class="panel-block export-block">
+      <button type="button" id="exportBtn" class="export">⬇ Export PNG</button>
+      <button type="button" id="exportAllBtn">Export all 4 sizes</button>
+      <p id="exportNote" class="export-note" aria-live="polite"></p>
+      <p class="privacy">Offline by design: every font and photo ships with this page, and your uploads stay on your machine.</p>
+    </section>
+  </aside>
 </main>
-<script type="module" src="./src/main.js"></script>
+
+<script type="module" src="src/main.js"></script>
 </body>
 </html>
