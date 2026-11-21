@@ -4,69 +4,61 @@
 [![rank](https://make.fun/badge/gta6-cover-art-01/ahh955/Gta6-cover-art/rank.svg)](https://make.fun/c/gta6-cover-art-01/leaderboard)
 [![reward](https://make.fun/badge/gta6-cover-art-01/ahh955/Gta6-cover-art/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
-An offline web app that turns your photos into GTA 6-style multi-panel cover
-art. Built for the make.fun bounty **gta6-cover-art-01** ("Make GTA 6 Cover
-Art"). Everything runs in the browser from static files — your photos never
-leave your device, and the app makes no network request.
+An offline web app that turns any photo and caption into dense, edge-to-edge
+GTA 6-style cover art — the multi-panel poster look with bold striped-chrome
+lettering and a Vice City sunset grade — exported as a PNG to share. Entry for
+the make.fun **gta6-cover-art-01** bounty.
 
 ## What it does
 
-- **Hero-mosaic covers**: one big centre hero panel plus six numbered side
-  panels, in four layouts — Hero mosaic, Six grid, Diagonal strips and Seven
-  mosaic.
-- **People-first, face-aware**: an eight-person sample cast of original
-  fictional people (made with an image model, no real celebrities), plus your
-  own photos. Crops centre on the face where the browser's FaceDetector API
-  is available, with a centre / rule-of-thirds fallback; every panel has a
-  Face button to re-centre on the face.
-- **Role tags**: each panel carries an editable cast tag — THE BOSS,
-  THE DRIVER, THE RIDER, THE COURIER, THE INSIDER and more.
-- **Striped retro-chrome 3D titles**: five chrome title styles with
-  horizontal stripes and extrusion, laid over the art as the dominant
-  element, plus two script subtitle fonts and a tagline ribbon.
-- **Movie-poster furniture**: review quote with five stars, billing block /
-  credits line, gold seal rosette, Vol. 1 tag, barcode and a COMING SOON line.
-- **Six colour grades** (Sunset Gold, Neon Night, Tropic Teal, Golden Hour,
-  Heatwave, Magenta Dusk) and look sliders: Paint, Grade, Halftone, Grain,
-  Glow and Title size.
-- **Per-panel controls**: click to select, drag to pan, wheel or slider to
-  zoom, Flip, Swap, Reset, and drop a photo onto a panel to fill it.
-- **Three-step flow**: 1 Add photos → 2 Caption → 3 Export PNG, with
-  "Try sample crew", Auto layout and Surprise me helpers, plus Undo / Redo.
-- **PNG export in three post sizes**: 1:1 (1080 × 1080), 4:5 (1080 × 1350)
-  and 16:9 (1920 × 1080), one at a time or all three at once.
+- **Dense poster, no void.** Panels fill ~85% of the poster height; the big
+  striped-chrome title overlaps the panels mid-poster at ~90% width; the
+  review quote, gold seal, billing block, barcode and COMING SOON line sit in
+  two compact strips. Nothing is left empty.
+- **Face-filling crops.** FaceDetector finds the face in each photo (with a
+  centre / rule-of-thirds fallback) and crops so the face fills ~55% of its
+  panel. The hero panel is a tight face close-up.
+- **4 layouts** (Hero Mosaic, Six Grid, Diagonal Strips, Seven Mosaic),
+  **6 grades** (Sunset Gold, Neon Night, Tropic Teal, Golden Hour, Heat Haze,
+  Ultraviolet), **6 striped-chrome title styles** and **2 script fonts**
+  (Pacifico, Yellowtail), plus look sliders for paint, grade, halftone,
+  grain, glow, title size and title lift.
+- **Role tags with sublabels** on every panel ("THE DRIVER / OCEAN DRIVE •
+  6:42 PM"), editable per panel, plus scene panels (car, boat) for story.
+- **Per-panel controls:** click to select, drag to pan, wheel or slider to
+  zoom, double-click to flip, drag a panel's number onto another panel to
+  swap, drop a photo onto a panel to fill it.
+- **3-step flow:** Add photos → Caption → Export PNG. Exports 1080×1080,
+  1080×1350 and 1920×1080, one at a time or all three at once, with live
+  size thumbnails. Undo/Redo, Surprise-me, "One photo, all panels" and a
+  "Try sample crew" button (8 fictional cast portraits + 2 scenes, made
+  with an image model for this app — no real people).
+- **Offline and private.** The app makes no network request; photos never
+  leave the device.
 
-## Try it
+## Run it
 
 ```sh
 node serve.ts
+# open http://localhost:8080
 ```
 
-Then open http://localhost:8080 in desktop Chrome. Or open `app/index.html`
-directly from the files — the app needs no server and no network.
+## Hand it in
 
-## How it is built
+```sh
+mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+```
 
-- `app/index.html` — the editor page.
-- `app/style.css` — the editor's styling.
-- `app/src/cover.js` — the cover renderer: panels, grades, chrome titles and
-  poster furniture, all drawn on one canvas.
-- `app/src/main.js` — wires the editor: photos, panels, captions, history
-  and PNG export.
-- `app/src/shots.js` — fixed scenes for screenshots (`?shot=editor`,
-  `?shot=cover`).
-- `app/samples/` — eight original fictional-people sample photos.
-- `app/fonts/` — Anton and Pacifico, both under the SIL Open Font License.
-- `main.ts` — the entry program: copies `app/` and `screenshots/` to the
-  output directory and writes `dossier.json` with the kit's library.
-- `vendor/makefun-app.ts` — the kit's dossier library, unchanged.
+`main.ts` copies `app/` and `screenshots/` to the output directory and writes
+`dossier.json` with the vendored make.fun library (`vendor/makefun-app.ts`,
+copied unchanged from the kit).
 
 ## Originality
 
-Every photo, title and design in this entry is original: the sample cast are
-fictional people made with an image model, the lettering uses Anton and
-Pacifico (SIL OFL), and nothing here is a Rockstar Games logo, artwork,
-character or font.
+All lettering, layouts and code are original to this entry. No Rockstar Games
+logo, artwork or font is used. Fonts are Anton, Pacifico and Yellowtail under
+the SIL Open Font License (see `app/fonts/OFL.txt`). Sample cast portraits
+were generated with an image model for this app; they depict no real person.
 
 ## License
 

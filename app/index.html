@@ -3,134 +3,162 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vice Cast Cover Studio — GTA-style multi-panel cover art</title>
+<title>Vice Cast Cover Studio — GTA 6-style cover art maker</title>
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><span class="brand-mark">VC</span> VICE CAST <em>COVER STUDIO</em></div>
-  <ol class="stepper" aria-label="Three steps to a cover">
-    <li><b>1</b> Add photos</li>
-    <li><b>2</b> Caption</li>
-    <li><b>3</b> Export PNG</li>
+  <div class="brand">
+    <span class="brand-mark">★</span>
+    <div>
+      <div class="brand-name">VICE CAST <span class="brand-script">Cover Studio</span></div>
+      <div class="brand-sub">GTA 6-style poster maker · offline · your photos never leave this device</div>
+    </div>
+  </div>
+  <ol class="stepper" aria-label="Three steps">
+    <li class="step active" data-step="1"><b>1</b> ADD PHOTOS</li>
+    <li class="step" data-step="2"><b>2</b> CAPTION</li>
+    <li class="step" data-step="3"><b>3</b> EXPORT PNG</li>
   </ol>
-  <div class="offline">Photos never leave this device &middot; Works offline</div>
+  <div class="top-actions">
+    <button id="undoBtn" type="button" title="Undo">↩ Undo</button>
+    <button id="redoBtn" type="button" title="Redo">↪ Redo</button>
+    <button id="surpriseBtn" type="button" class="accent" title="Randomise layout, grade and lettering">✦ Surprise me</button>
+    <span class="privacy">🔒 Photos never leave this device</span>
+  </div>
 </header>
 
-<div class="workspace">
-  <aside class="controls">
-    <section class="group">
-      <h2><span class="step-no">1</span> Photos</h2>
-      <div class="row">
-        <button id="add-photos" type="button" class="btn primary">Add photos</button>
-        <button id="sample-crew" type="button" class="btn">Try sample crew</button>
+<main class="editor">
+  <!-- LEFT: photos, layouts, grades, panel moves -->
+  <section class="col col-left" aria-label="Photos and style">
+    <div class="panel">
+      <h2><span class="n">1</span> ADD PHOTOS</h2>
+      <label class="file-btn" for="photoInput">CHOOSE PHOTOS<span>or drop / paste them anywhere</span></label>
+      <input id="photoInput" type="file" accept="image/*" multiple hidden>
+      <div class="row two">
+        <button id="sampleBtn" type="button">★ Try sample crew</button>
+        <button id="onePhotoBtn" type="button">One photo, all panels</button>
       </div>
-      <button id="one-photo" type="button" class="btn wide">One photo, all panels</button>
-      <input id="file-input" type="file" accept="image/*" multiple hidden>
-      <div id="tray" class="tray" aria-label="Your photos"></div>
-      <p class="hint">Click a photo to fill the selected panel, or drag it onto a panel. Drop any image file straight onto the cover.</p>
-    </section>
-
-    <section class="group">
-      <h2><span class="step-no">2</span> Caption</h2>
-      <label>Title <input id="title" type="text" maxlength="30" value="VICE CAST"></label>
-      <label>Subtitle <input id="subtitle" type="text" maxlength="60" value="Seven souls. One city."></label>
-      <label>Tagline ribbon <input id="tagline" type="text" maxlength="40" value="Every crew has a story"></label>
-      <label>Review quote <input id="quote" type="text" maxlength="60" value="The cover of the summer"></label>
-      <h3>Title style</h3>
-      <div class="swatches">
-        <button type="button" class="swatch" data-title-style="sunset">Sunset chrome</button>
-        <button type="button" class="swatch" data-title-style="gold">Golden leaf</button>
-        <button type="button" class="swatch" data-title-style="ice">Ice neon</button>
-        <button type="button" class="swatch" data-title-style="tube">Neon tube</button>
-        <button type="button" class="swatch" data-title-style="blade">Heat blade</button>
-      </div>
-      <h3>Subtitle font</h3>
-      <div class="swatches">
-        <button type="button" class="swatch script" data-subtitle-font="pacifico">Pacifico script</button>
-        <button type="button" class="swatch script" data-subtitle-font="retro">Retro script</button>
-      </div>
-    </section>
-
-    <section class="group">
-      <h2>Layout</h2>
-      <div class="swatches">
-        <button type="button" class="swatch" data-layout="hero">Hero mosaic</button>
-        <button type="button" class="swatch" data-layout="six">Six grid</button>
-        <button type="button" class="swatch" data-layout="diagonal">Diagonal strips</button>
-        <button type="button" class="swatch" data-layout="seven">Seven mosaic</button>
-      </div>
-      <div class="row">
-        <button id="auto-layout" type="button" class="btn">Auto layout</button>
-        <button id="surprise" type="button" class="btn">Surprise me</button>
-      </div>
-    </section>
-
-    <section class="group">
-      <h2>Colour grade</h2>
-      <div class="swatches grades">
-        <button type="button" class="swatch" data-grade="sunset" style="--g1:#ff7a1a;--g2:#d6246e">Sunset Gold</button>
-        <button type="button" class="swatch" data-grade="neon" style="--g1:#2de2e6;--g2:#ff2e88">Neon Night</button>
-        <button type="button" class="swatch" data-grade="teal" style="--g1:#00beaa;--g2:#0a3c6e">Tropic Teal</button>
-        <button type="button" class="swatch" data-grade="golden" style="--g1:#ffc850;--g2:#a03c14">Golden Hour</button>
-        <button type="button" class="swatch" data-grade="heat" style="--g1:#ff3c14;--g2:#780028">Heatwave</button>
-        <button type="button" class="swatch" data-grade="dusk" style="--g1:#be3cff;--g2:#280050">Magenta Dusk</button>
-      </div>
-      <h3>Look</h3>
-      <label class="slider">Paint <input id="look-paint" type="range" min="0" max="1" step="0.01" value="0.5"></label>
-      <label class="slider">Grade <input id="look-grade" type="range" min="0" max="1" step="0.01" value="0.7"></label>
-      <label class="slider">Halftone <input id="look-halftone" type="range" min="0" max="1" step="0.01" value="0.25"></label>
-      <label class="slider">Grain <input id="look-grain" type="range" min="0" max="1" step="0.01" value="0.35"></label>
-      <label class="slider">Glow <input id="look-glow" type="range" min="0" max="1" step="0.01" value="0.5"></label>
-      <label class="slider">Title size <input id="look-titleSize" type="range" min="0" max="1" step="0.01" value="0.5"></label>
-    </section>
-
-    <section class="group">
-      <h2>Selected panel &middot; <span id="panel-label">Panel 1 of 7</span></h2>
-      <label>Role tag <input id="role" type="text" maxlength="20" value="THE BOSS"></label>
-      <div class="row wrap">
-        <button id="face-btn" type="button" class="btn">Face</button>
-        <button id="flip-btn" type="button" class="btn">Flip</button>
-        <button id="swap-btn" type="button" class="btn">Swap</button>
-        <button id="reset-btn" type="button" class="btn">Reset</button>
-        <button id="empty-btn" type="button" class="btn">Empty</button>
-      </div>
-      <label class="slider">Zoom <input id="zoom" type="range" min="1" max="3" step="0.01" value="1"></label>
-      <label class="slider">Left &ndash; right <input id="pan-x" type="range" min="0" max="1" step="0.01" value="0.5"></label>
-      <label class="slider">Up &ndash; down <input id="pan-y" type="range" min="0" max="1" step="0.01" value="0.42"></label>
-      <p class="hint">Click a panel to select it, drag to pan the photo, scroll to zoom. Face recentres the crop on the face.</p>
-      <div class="row">
-        <button id="undo-btn" type="button" class="btn">Undo</button>
-        <button id="redo-btn" type="button" class="btn">Redo</button>
-      </div>
-    </section>
-
-    <section class="group">
-      <h2><span class="step-no">3</span> Export PNG</h2>
-      <div class="swatches">
-        <button type="button" class="swatch" data-size="1x1">1:1 &middot; 1080&times;1080</button>
-        <button type="button" class="swatch" data-size="4x5">4:5 &middot; 1080&times;1350</button>
-        <button type="button" class="swatch" data-size="16x9">16:9 &middot; 1920&times;1080</button>
-      </div>
-      <div class="row">
-        <button id="export-btn" type="button" class="btn primary">Export PNG</button>
-        <button id="export-all" type="button" class="btn">Export all 3</button>
-      </div>
-      <p id="status" role="status"></p>
-    </section>
-  </aside>
-
-  <main class="stage">
-    <div class="canvas-wrap">
-      <canvas id="preview" width="720" height="720" aria-label="The cover, live preview"></canvas>
+      <div id="tray" class="tray" aria-label="Photo tray"></div>
+      <p class="hint">Drag a photo onto a panel to fill it. Drag a panel's number onto another panel to swap.</p>
     </div>
-    <div class="thumbs" aria-label="Live previews of the three post sizes">
-      <figure><canvas id="thumb-1x1" width="132" height="132"></canvas><figcaption>1:1</figcaption></figure>
-      <figure><canvas id="thumb-4x5" width="132" height="165"></canvas><figcaption>4:5</figcaption></figure>
-      <figure><canvas id="thumb-16x9" width="132" height="74"></canvas><figcaption>16:9</figcaption></figure>
+
+    <div class="panel">
+      <h2>LAYOUT</h2>
+      <div id="layoutBtns" class="grid-btns"></div>
     </div>
-  </main>
-</div>
+
+    <div class="panel">
+      <h2>COLOUR GRADE</h2>
+      <div id="gradeBtns" class="grid-btns grades"></div>
+    </div>
+
+    <div class="panel">
+      <h2>LOOK</h2>
+      <div class="sliders">
+        <label>Paint <input id="slPaint" type="range" min="0" max="1" step="0.05" value="0.65"><output>65%</output></label>
+        <label>Grade <input id="slGrade" type="range" min="0" max="1.4" step="0.05" value="1"><output>100%</output></label>
+        <label>Halftone <input id="slHalftone" type="range" min="0" max="1" step="0.05" value="0.35"><output>35%</output></label>
+        <label>Grain <input id="slGrain" type="range" min="0" max="1" step="0.05" value="0.3"><output>30%</output></label>
+        <label>Glow <input id="slGlow" type="range" min="0" max="1.5" step="0.05" value="0.8"><output>80%</output></label>
+        <label>Title size <input id="slTitleSize" type="range" min="0.75" max="1.2" step="0.01" value="1"><output>100%</output></label>
+        <label>Title lift <input id="slTitleLift" type="range" min="-1" max="1" step="0.05" value="0"><output>0</output></label>
+      </div>
+    </div>
+
+    <div class="panel moves">
+      <h2>PANEL MOVES</h2>
+      <ul>
+        <li>Click a panel to select it</li>
+        <li>Drag inside to pan the photo</li>
+        <li>Wheel or slider to zoom</li>
+        <li>Drag its number onto another panel to swap</li>
+        <li>Double-click a panel to flip it</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CENTRE: preview + panel controls + size thumbnails -->
+  <section class="col col-center" aria-label="Live preview">
+    <div class="size-tabs" role="tablist" aria-label="Poster size">
+      <button type="button" data-size="1:1">1:1 <span>1080×1080</span></button>
+      <button type="button" data-size="4:5">4:5 <span>1080×1350</span></button>
+      <button type="button" data-size="16:9" class="active">16:9 <span>1920×1080</span></button>
+      <span class="live-dot">● Live preview</span>
+    </div>
+    <div id="stage" class="stage">
+      <canvas id="poster" width="1920" height="1080" aria-label="The cover art"></canvas>
+      <div id="badges" class="badges"></div>
+      <div id="dropHint" class="drop-hint" hidden>Drop photos to fill the panels</div>
+    </div>
+    <div class="panel-bar">
+      <span id="panelLabel" class="panel-label">PANEL 1 · HERO</span>
+      <button id="prevPhotoBtn" type="button">◀ Photo</button>
+      <button id="nextPhotoBtn" type="button">Photo ▶</button>
+      <button id="flipBtn" type="button">⇋ Flip</button>
+      <label class="zoom">Zoom <input id="zoomSlider" type="range" min="1" max="3" step="0.05" value="1"></label>
+      <button id="resetPanelBtn" type="button">Reset</button>
+      <button id="autoFillBtn" type="button" class="accent">✦ Auto-fill</button>
+    </div>
+    <div class="thumbs" aria-label="Size previews">
+      <figure><canvas id="thumb11" width="270" height="270"></canvas><figcaption>1:1</figcaption></figure>
+      <figure><canvas id="thumb45" width="216" height="270"></canvas><figcaption>4:5</figcaption></figure>
+      <figure><canvas id="thumb169" width="480" height="270"></canvas><figcaption>16:9</figcaption></figure>
+    </div>
+    <p id="status" class="status" role="status">Sample crew loaded — pick a layout, grade and caption, then export.</p>
+  </section>
+
+  <!-- RIGHT: caption + export -->
+  <section class="col col-right" aria-label="Caption and export">
+    <div class="panel">
+      <h2><span class="n">2</span> CAPTION</h2>
+      <div class="fields">
+        <label>TITLE <input id="fTitle" type="text" maxlength="34" value="Golden Getaway"></label>
+        <label>TITLE STYLE
+          <select id="fTitleStyle"></select>
+        </label>
+        <label>SCRIPT SUBTITLE <input id="fScript" type="text" maxlength="40" value="One last summer job"></label>
+        <label>SCRIPT FONT
+          <select id="fScriptFont"></select>
+        </label>
+        <label>TAGLINE RIBBON <input id="fTagline" type="text" maxlength="60" value="SEVEN SINNERS • ONE COAST • ZERO REGRETS"></label>
+        <div class="row two">
+          <label>REVIEW QUOTE <input id="fQuote" type="text" maxlength="48" value="THE HOTTEST RIDE OF THE YEAR"></label>
+          <label>SOURCE <input id="fQuoteSource" type="text" maxlength="30" value="GOLDEN MILE GAZETTE"></label>
+        </div>
+        <label>BILLING <textarea id="fBilling" rows="2" maxlength="220">A VICE CAST PICTURE  •  STARRING YOU AND YOUR CREW  •  SHOT ON YOUR OWN CAMERA  •  GRADED BY HAND  •  NO PHOTO EVER LEAVES YOUR DEVICE</textarea></label>
+        <div class="row two">
+          <label>SEAL <input id="fSeal" type="text" maxlength="16" value="BEST CAST"></label>
+          <label>SEAL RING <input id="fSealRing" type="text" maxlength="30" value="GOLDEN MILE FILM FESTIVAL"></label>
+        </div>
+        <div class="row two">
+          <label>RELEASE LINE <input id="fRelease" type="text" maxlength="20" value="COMING SOON"></label>
+          <label>EDITION TAG <input id="fEdition" type="text" maxlength="14" value="VOL. 1"></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>NAME TAGS <span class="auto-note">role + place • time</span></h2>
+      <div id="tagFields" class="tag-fields"></div>
+    </div>
+
+    <div class="panel export-panel">
+      <h2><span class="n">3</span> EXPORT PNG</h2>
+      <div class="row three">
+        <button type="button" data-export="1:1">1:1<br><span>1080×1080</span></button>
+        <button type="button" data-export="4:5">4:5<br><span>1080×1350</span></button>
+        <button type="button" data-export="16:9">16:9<br><span>1920×1080</span></button>
+      </div>
+      <button id="exportAllBtn" type="button" class="big-export">⬇ EXPORT ALL 3 PNGs</button>
+      <p class="hint">PNGs download straight from your browser. Nothing is uploaded, ever.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>Vice Cast Cover Studio — an original fan-style poster tool. Not affiliated with Rockstar Games. Fonts: Anton, Pacifico &amp; Yellowtail under the SIL Open Font License. Sample cast portraits were made with an image model for this app; no real people.</span>
+</footer>
 
 <script type="module" src="./src/main.js"></script>
 </body>
